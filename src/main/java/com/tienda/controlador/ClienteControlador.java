@@ -24,34 +24,12 @@ public class ClienteControlador {
 	private ClienteRepositorio repositorio;// uso la anotación @Autowired para asegurarme de que la clase
 											// ClienteControlador tiene una instancia de ClienteRepositorio disponible
 											// para usarla cuando sea necesario.
-	// @Autowired // llamo al repositorio de ventas para poder incluir las compras
-	// en el listado de clientes
-	// private VentaRepositorio repositorioVentas;
 
 	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
-							// listar todos los clientes con sus compras relacionadas.
+							// listar todos los clientes.
 	public List<Cliente> getTodosLosClientesConCompras() {
 		return repositorio.findAll();
 	}
-
-	/*
-	 * @GetMapping("/lista") public List<Cliente> getTodosLosClientesConCompras() {
-	 * List<Cliente> clientesConCompras = repositorio.findAll(); // Guardo la lista
-	 * de clientes en una variable. List<Venta> ventas =
-	 * repositorioVentas.findAll(); // Guardo la lista de ventas
-	 * 
-	 * for(Cliente c : clientesConCompras) {
-	 * 
-	 * //En este ciclo, para cada cliente, se setea la lista de ventas pidiéndole al
-	 * repositorioVentas //el listado correspondiente. Hay que definir este nuevo
-	 * método en una implementación de la interfaz.
-	 * 
-	 * for(Venta v : ventas) { if(v.getCliente().equals(c)) { // Si el cliente de la
-	 * venta es el mismo que tenemos en este punto del ciclo c.getCompras().add(v);
-	 * // Agregamos la venta a la lista de compras del cliente. } } }
-	 * 
-	 * return clientesConCompras; }
-	 */
 
 	// este método sirve para guardar el cliente
 	@PostMapping("/guardar")
