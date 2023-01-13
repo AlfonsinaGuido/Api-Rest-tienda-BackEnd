@@ -33,7 +33,7 @@ public class ProductoControlador {
 
 	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
 							// listar todos los productos.
-	public List<Producto> listarTodosLosProductos() {
+	public List<Producto> getListarTodosLosProductos() {
 		return repositorio.findAll();
 	}
 
@@ -89,13 +89,13 @@ public class ProductoControlador {
 
 	// este método sirve para guardar el producto
 	@PostMapping("/guardar")
-	public Producto guardarProducto(@RequestBody Producto producto) {
+	public Producto postGuardarProducto(@RequestBody Producto producto) {
 		return repositorio.save(producto);
 	}
 
 	// este método sirve para buscar un producto
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable Long id) {
+	public ResponseEntity<Producto> getObtenerProductoPorId(@PathVariable Long id) {
 		Producto producto = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el producto con el ID : " + id));
 		return ResponseEntity.ok(producto);
@@ -104,7 +104,7 @@ public class ProductoControlador {
 	// este método sirve para actualizar, dar de baja o volver a dar de alta a un
 	// producto (modificando la fecha de baja predeterminada por defecto).
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
+	public ResponseEntity<Producto> putActualizarProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
 		Producto producto = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el producto con el ID : " + id));
 

@@ -28,19 +28,19 @@ public class ProveedorControlador {
 
 	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
 							// listar todos los proveedores.
-	public List<Proveedor> listarTodosLosProveedores() {
+	public List<Proveedor> getListarTodosLosProveedores() {
 		return repositorio.findAll();
 	}
 
 	// este método sirve para guardar el proveedor
 	@PostMapping("/guardar")
-	public Proveedor guardarProveedor(@RequestBody Proveedor proveedor) {
+	public Proveedor postGuardarProveedor(@RequestBody Proveedor proveedor) {
 		return repositorio.save(proveedor);
 	}
 
 	// este método sirve para buscar un proveedor
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<Proveedor> obtenerProveedorPorId(@PathVariable Long id) {
+	public ResponseEntity<Proveedor> getObtenerProveedorPorId(@PathVariable Long id) {
 		Proveedor proveedor = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el proveedor con el ID : " + id));
 		return ResponseEntity.ok(proveedor);
@@ -49,7 +49,7 @@ public class ProveedorControlador {
 	// este método sirve para actualizar, dar de baja o volver a dar de alta a un
 	// proveedor (modificando la fecha de baja predeterminada por defecto).
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id,
+	public ResponseEntity<Proveedor> putActualizarProveedor(@PathVariable Long id,
 			@RequestBody Proveedor detallesProveedor) {
 		Proveedor proveedor = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el proveedor con el ID : " + id));

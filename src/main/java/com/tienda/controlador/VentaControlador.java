@@ -30,19 +30,19 @@ public class VentaControlador {
 
 	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
 							// listar todas las ventas.
-	public List<Venta> listarTodasLasVentas() {
+	public List<Venta> getListarTodasLasVentas() {
 		return repositorio.findAll();
 	}
 
 	// este método sirve para guardar la venta
 	@PostMapping("/guardar")
-	public Venta guardarVenta(@RequestBody Venta venta) {
+	public Venta postGuardarVenta(@RequestBody Venta venta) {
 		return repositorio.save(venta);
 	}
 
 	// este método sirve para buscar una venta por id
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<Venta> obtenerVentaPorId(@PathVariable Long id) {
+	public ResponseEntity<Venta> getObtenerVentaPorId(@PathVariable Long id) {
 		Venta venta = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe la venta con el ID : " + id));
 		return ResponseEntity.ok(venta);
@@ -61,7 +61,7 @@ public class VentaControlador {
 
 	// este método sirve para modificar datos de la venta.
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Venta> actualizarVenta(@PathVariable Long id, @RequestBody Venta detallesVenta) {
+	public ResponseEntity<Venta> putActualizarVenta(@PathVariable Long id, @RequestBody Venta detallesVenta) {
 		Venta venta = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe la venta con el ID : " + id));
 

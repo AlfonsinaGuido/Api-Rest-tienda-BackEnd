@@ -35,44 +35,63 @@ public class ClienteControlador {
 	private VentaRepositorio repositorioVentas;
 
 	// método para retornar la lista de clientes con sus compras (la relación es
-	// entre las clases Cliente y Venta) Creo dos clases auxiliares para poder implementar el objetivo.
+	// entre las clases Cliente y Venta) Creo dos clases auxiliares para poder
+	// implementar el objetivo.
 	@GetMapping("/lista")
-	public List<ClienteVenta> getTodosLosClientesConCompras() {
+	public List<ClienteVenta> getTodosLosClientesConCompras() {// declaro el método y especifico que devuelvo una lista
+																// de objetos "ClienteVenta".
 		List<Venta> ventas = repositorioVentas.findAll();
-		List<ClienteVenta> clientesVentas = new ArrayList<ClienteVenta>();
-		Set<Cliente> clientes = new HashSet<Cliente>();
-		for (Venta venta : ventas) {
-			Cliente cliente = venta.getCliente();
-			if (!clientes.contains(cliente)) {
-				clientes.add(cliente);
-				ClienteVenta clienteVenta = new ClienteVenta();
-				clienteVenta.setCliente(cliente);
-				List<VentaResponse> ventasResponse = new ArrayList<VentaResponse>();
-				VentaResponse ventaResponse = new VentaResponse(venta);
-				ventasResponse.add(ventaResponse);
-				clienteVenta.setVentas(ventasResponse);
-				clientesVentas.add(clienteVenta);
+		List<ClienteVenta> clientesVentas = new ArrayList<ClienteVenta>();// creo una nueva lista vacía para almacenar
+																			// los objetos "ClienteVenta".
+		Set<Cliente> clientes = new HashSet<Cliente>();// creo un nuevo conjunto vacío para almacenar los clientes que
+														// ya se han procesado.
+		for (Venta venta : ventas) {// genero bucle for que itera a través de la lista de ventas.
+			Cliente cliente = venta.getCliente();// obtengo el objeto cliente de la venta actual.
+			if (!clientes.contains(cliente)) {// verifico si el cliente actual ya ha sido procesado. Si no es así, entra
+												// en el bloque del if.
+				clientes.add(cliente);// agrego el cliente actual al conjunto de clientes procesados.
+				ClienteVenta clienteVenta = new ClienteVenta();// creo un nuevo objeto "ClienteVenta".
+				clienteVenta.setCliente(cliente);// establezco el objeto cliente en el objeto "ClienteVenta".
+				List<VentaResponse> ventasResponse = new ArrayList<VentaResponse>();// creo una nueva lista vacía para
+																					// almacenar los objetos
+																					// "VentaResponse" para el cliente
+																					// actual.
+				VentaResponse ventaResponse = new VentaResponse(venta);// creo un nuevo objeto "VentaResponse" para la
+																		// venta actual.
+				ventasResponse.add(ventaResponse);// agrego el objeto "VentaResponse" a la lista de objetos
+													// "VentaResponse" para el cliente actual.
+				clienteVenta.setVentas(ventasResponse);// establezco la lista de objetos "VentaResponse" en el objeto
+														// "ClienteVenta".
+				clientesVentas.add(clienteVenta);// agrego el objeto "ClienteVenta" a la lista de objetos
+													// "ClienteVenta".
 			} else {
-				for (ClienteVenta clienteVenta : clientesVentas) {
-					if (clienteVenta.getCliente().equals(cliente)) {
-						VentaResponse ventaResponse = new VentaResponse(venta);
-						clienteVenta.getVentas().add(ventaResponse);
+				for (ClienteVenta clienteVenta : clientesVentas) {// genero bucle for que itera a través de la lista de
+																	// objetos "ClienteVenta".
+					if (clienteVenta.getCliente().equals(cliente)) {// verifico si el objeto "ClienteVenta" actual tiene
+																	// el mismo cliente que el cliente actual. Si es
+																	// así, entra en el bloque del if.
+						VentaResponse ventaResponse = new VentaResponse(venta);// creo un nuevo objeto "VentaResponse"
+																				// para la venta actual.
+						clienteVenta.getVentas().add(ventaResponse);// agrego el objeto "VentaResponse" a la lista de
+																	// objetos "VentaResponse" del objeto "ClienteVenta"
+																	// actual.
 					}
 				}
 			}
 		}
-		return clientesVentas;
+		return clientesVentas;// devuelvo la lista de objetos "ClienteVenta" que contiene los clientes y sus
+								// respectivas ventas.
 	}
 
 	// este método sirve para guardar el cliente
 	@PostMapping("/guardar")
-	public Cliente guardarCliente(@RequestBody Cliente cliente) {
+	public Cliente postGuardarCliente(@RequestBody Cliente cliente) {
 		return repositorio.save(cliente);
 	}
 
 	// este método sirve para buscar un cliente
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<Cliente> obtenerClientePorId(@PathVariable Long id) {
+	public ResponseEntity<Cliente> getObtenerClientePorId(@PathVariable Long id) {
 		Cliente cliente = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el cliente con el ID : " + id));
 		return ResponseEntity.ok(cliente);
@@ -81,7 +100,7 @@ public class ClienteControlador {
 	// este método sirve para actualizar, dar de baja o volver a dar de alta a un
 	// cliente (modificando la fecha de baja predeterminada por defecto).
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Cliente> actualizarCliente(@PathVariable Long id, @RequestBody Cliente detallesCliente) {
+	public ResponseEntity<Cliente> putActualizarCliente(@PathVariable Long id, @RequestBody Cliente detallesCliente) {
 		Cliente cliente = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el cliente con el ID : " + id));
 

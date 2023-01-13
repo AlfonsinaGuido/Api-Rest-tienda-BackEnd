@@ -27,7 +27,7 @@ public class CompraControlador {
 
 	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
 							// listar todas las compras.
-	public List<Compra> listarTodosLasCompras() {
+	public List<Compra> getListarTodosLasCompras() {
 		return repositorio.findAll();
 	}
 
@@ -39,13 +39,13 @@ public class CompraControlador {
 
 	// este método sirve para guardar la compra
 	@PostMapping("/guardar")
-	public Compra guardarCompra(@RequestBody Compra compra) {
+	public Compra postGuardarCompra(@RequestBody Compra compra) {
 		return repositorio.save(compra);
 	}
 
 	// este método sirve para buscar una compra
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<Compra> obtenerCompraPorId(@PathVariable Long id) {
+	public ResponseEntity<Compra> getObtenerCompraPorId(@PathVariable Long id) {
 		Compra compra = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe la compra con el ID : " + id));
 		return ResponseEntity.ok(compra);
@@ -53,7 +53,7 @@ public class CompraControlador {
 
 	// este método sirve para modificar datos de la compra.
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Compra> actualizarCompra(@PathVariable Long id, @RequestBody Compra detallesCompra) {
+	public ResponseEntity<Compra> putActualizarCompra(@PathVariable Long id, @RequestBody Compra detallesCompra) {
 		Compra compra = repositorio.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe la compra con el ID : " + id));
 
