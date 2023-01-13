@@ -1,7 +1,6 @@
 package com.tienda.modelo;
 
 import java.util.Date;
-import java.util.List;
 
 //Jakarta Persistence es una evolución de la especificación Javax Persistence y ofrece algunas mejoras y características adicionales sobre la especificación original.
 import jakarta.persistence.Column;
@@ -51,8 +50,6 @@ public class Cliente {
 																											// defecto.
 	private Date fechaBaja;
 
-	// private List<Venta> compras;
-
 	// Genero constructor vacío sin argumentos para que si no se incluye código que
 	// inicialice los atributos de la clase a valores específicos, estos se
 	// inicializarán en sus valores predeterminados.
@@ -63,7 +60,7 @@ public class Cliente {
 	// Genero constructor con atributos para crear una instancia de una clase con
 	// valores específicos para sus atributos.
 	public Cliente(Long id_Cliente, String nombre, String apellido, String dni, String telefono, String direccion,
-			Date fechaAlta, Date fechaBaja, List<Venta> compras) {
+			Date fechaAlta, Date fechaBaja) {
 		super();
 		this.id_Cliente = id_Cliente;
 		this.nombre = nombre;
@@ -73,8 +70,8 @@ public class Cliente {
 		this.direccion = direccion;
 		this.fechaAlta = fechaAlta;
 		this.fechaBaja = fechaBaja;
-		// this.compras = compras;
 	}
+
 
 	// Genero este constructor para poder pasar en el json de las request de postman
 	// el dato numérico directo del id
@@ -148,10 +145,5 @@ public class Cliente {
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
 	}
-	/*
-	 * public List<Venta> getCompras() { return compras; }
-	 * 
-	 * public void setCompras(List<Venta> compras) { this.compras = compras; }
-	 */
-
+	
 }

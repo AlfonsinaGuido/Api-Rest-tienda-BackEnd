@@ -1,6 +1,11 @@
 package com.tienda.controlador;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tienda.auxiliares.ClienteVenta;
 import com.tienda.excepciones.ResourceNotFoundException;
 import com.tienda.modelo.Cliente;
+import com.tienda.modelo.Venta;
 import com.tienda.repositorio.ClienteRepositorio;
+import com.tienda.repositorio.VentaRepositorio;
+import com.tienda.auxiliares.VentaResponse;
 
 @RestController // defino que no será un controlador sencillo sino que será una api rest.
 @RequestMapping("/clientes")
@@ -24,12 +33,55 @@ public class ClienteControlador {
 	private ClienteRepositorio repositorio;// uso la anotación @Autowired para asegurarme de que la clase
 											// ClienteControlador tiene una instancia de ClienteRepositorio disponible
 											// para usarla cuando sea necesario.
+	@Autowired
+	private VentaRepositorio repositorioVentas;
 
-	@GetMapping("/lista") // indico el endpoint que se corresponde con esta clase. Este método sirve para
-							// listar todos los clientes.
-	public List<Cliente> getTodosLosClientesConCompras() {
-		return repositorio.findAll();
+	/*
+	 * @GetMapping("/lista") // indico el endpoint que se corresponde con esta
+	 * clase. // Este método sirve para listar todos los clientes con sus compras
+	 * relacionadas // (clase Venta). public List<ClienteVenta>
+	 * getTodosLosClientesConCompras() {
+	 * 
+	 * List<Venta> ventas = repositorioVentas.findAll(); // Guardo la lista de
+	 * ventas en una variable. List<ClienteVenta> clientesVentas = new
+	 * ArrayList<ClienteVenta>(); for (Venta venta : ventas) { Cliente cliente =
+	 * venta.getCliente(); ClienteVenta clienteVenta = new
+	 * ClienteVenta(cliente.getNombre(), cliente.getApellido(),
+	 * cliente.getDireccion(), venta.getProducto().getNombre(),
+	 * venta.getPrecioTotal(), venta.getFechaVenta(), venta.getCantidad());
+	 * clientesVentas.add(clienteVenta); }
+	 * 
+	 * return clientesVentas; }
+	 */
+
+	@GetMapping("/lista")
+	public List<ClienteVenta> getTodosLosClientesConCompras() {
+		List<Venta> ventas = repositorioVentas.findAll();
+		List<ClienteVenta> clientesVentas = new ArrayList<ClienteVenta>();
+		Set<Cliente> clientes = new HashSet<Cliente>();
+		for (Venta venta : ventas) {
+			Cliente cliente = venta.getCliente();
+			if (!clientes.contains(cliente)) {
+				clientes.add(cliente);
+				ClienteVenta clienteVenta = new ClienteVenta();
+				clienteVenta.setCliente(cliente);
+				List<VentaResponse> ventasResponse = new ArrayList<VentaResponse>();
+				VentaResponse ventaResponse = new VentaResponse(venta);
+				ventasResponse.add(ventaResponse);
+				clienteVenta.setVentas(ventasResponse);
+				clientesVentas.add(clienteVenta);
+			} else {
+				for (ClienteVenta clienteVenta : clientesVentas) {
+					if (clienteVenta.getCliente().equals(cliente)) {
+						VentaResponse ventaResponse = new VentaResponse(venta);
+						clienteVenta.getVentas().add(ventaResponse);
+					}
+				}
+			}
+		}
+		return clientesVentas;
 	}
+
 
 	// este método sirve para guardar el cliente
 	@PostMapping("/guardar")
