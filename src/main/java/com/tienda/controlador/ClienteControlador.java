@@ -1,10 +1,8 @@
 package com.tienda.controlador;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,24 +34,8 @@ public class ClienteControlador {
 	@Autowired
 	private VentaRepositorio repositorioVentas;
 
-	/*
-	 * @GetMapping("/lista") // indico el endpoint que se corresponde con esta
-	 * clase. // Este método sirve para listar todos los clientes con sus compras
-	 * relacionadas // (clase Venta). public List<ClienteVenta>
-	 * getTodosLosClientesConCompras() {
-	 * 
-	 * List<Venta> ventas = repositorioVentas.findAll(); // Guardo la lista de
-	 * ventas en una variable. List<ClienteVenta> clientesVentas = new
-	 * ArrayList<ClienteVenta>(); for (Venta venta : ventas) { Cliente cliente =
-	 * venta.getCliente(); ClienteVenta clienteVenta = new
-	 * ClienteVenta(cliente.getNombre(), cliente.getApellido(),
-	 * cliente.getDireccion(), venta.getProducto().getNombre(),
-	 * venta.getPrecioTotal(), venta.getFechaVenta(), venta.getCantidad());
-	 * clientesVentas.add(clienteVenta); }
-	 * 
-	 * return clientesVentas; }
-	 */
-
+	// método para retornar la lista de clientes con sus compras (la relación es
+	// entre las clases Cliente y Venta) Creo dos clases auxiliares para poder implementar el objetivo.
 	@GetMapping("/lista")
 	public List<ClienteVenta> getTodosLosClientesConCompras() {
 		List<Venta> ventas = repositorioVentas.findAll();
@@ -81,7 +63,6 @@ public class ClienteControlador {
 		}
 		return clientesVentas;
 	}
-
 
 	// este método sirve para guardar el cliente
 	@PostMapping("/guardar")
